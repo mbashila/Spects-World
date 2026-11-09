@@ -1,0 +1,6 @@
+{
+  "name": "eyeclinic",
+  "description": "Spects World offers comprehensive eye examinations, designer spectacles, custom digital lenses, and expert optometry care.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
