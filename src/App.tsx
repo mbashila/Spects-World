@@ -21,9 +21,23 @@ import designerGlassesImg from './assets/images/optimized/designer_glasses_displ
 import patientWearingImg from './assets/images/optimized/patient_wearing_spects.webp';
 import testimonialOneImg from './assets/images/optimized/patient_testimonial_one.webp';
 import testimonialTwoImg from './assets/images/optimized/patient_testimonial_two.webp';
+import customerFramesImg from './assets/images/optimized/customer-trying-frames.webp';
+import teamReceptionImg from './assets/images/optimized/team-reception.webp';
+import logoDark from './assets/brand/logo-dark.png';
+import logoLight from './assets/brand/logo-light.png';
 
-// HIGH-RESOLUTION EYE CLINIC & DESIGNER SPECTACLES IMAGES
-const SECTION3_BG = patientWearingImg;
+// REAL PRACTICE DETAILS (Spectsworld Optical, Bulawayo) — single source for every contact reference
+const CLINIC = {
+  name: 'Spectsworld Optical',
+  phone: '+263 785 886 104',
+  tel: 'tel:+263785886104',
+  suite: 'Suite 1, David Mansions',
+  street: '96 R.G. Mugabe Way',
+  area: 'Between 9th & 10th Avenue, Bulawayo, Zimbabwe',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=David+Mansions+96+R.G.+Mugabe+Way+Bulawayo+Zimbabwe',
+};
+
+const SECTION3_BG = teamReceptionImg;
 
 // HERO SLIDES
 const HERO_INTERVAL = 7000;
@@ -41,8 +55,8 @@ const HERO_SLIDES = [
     eyebrow: 'Independent Eyewear',
     title: 'Frames With Character',
     text: 'Titanium and Japanese acetate from small design houses, fitted to the geometry of your face.',
-    image: designerGlassesImg,
-    position: '50% 60%',
+    image: customerFramesImg,
+    position: '46% 35%',
   },
   {
     label: 'Custom Lenses',
@@ -483,14 +497,24 @@ function Navbar({ activeLink, onNavClick, onOpenBooking, onOpenEmergency }: Navb
           data-nav-item
           onClick={() => handleLinkClick('Home')}
           aria-label="Spects World home"
-          className={`justify-self-start flex flex-col items-start cursor-pointer select-none hover:opacity-75 transition-[color,opacity] duration-300 ${tone}`}
+          className="justify-self-start relative cursor-pointer select-none hover:opacity-80 transition-opacity duration-300"
         >
-          <span className="text-lg md:text-xl font-extrabold uppercase tracking-[0.35em] leading-none">
-            Spects
-          </span>
-          <span className="text-[9px] md:text-[10px] font-semibold uppercase tracking-[0.5em] leading-none mt-1.5 opacity-80">
-            World
-          </span>
+          {/* Light logo over the hero photo, original colours once the bar turns white (crossfade) */}
+          <img
+            src={logoLight}
+            alt="Spects World"
+            width={381}
+            height={249}
+            className={`h-11 md:h-[52px] w-auto transition-opacity duration-500 ${solid ? 'opacity-0' : 'opacity-100'}`}
+          />
+          <img
+            src={logoDark}
+            alt=""
+            aria-hidden="true"
+            width={381}
+            height={249}
+            className={`absolute inset-0 h-11 md:h-[52px] w-auto transition-opacity duration-500 ${solid ? 'opacity-100' : 'opacity-0'}`}
+          />
         </button>
 
         {/* Desktop centered links */}
@@ -511,7 +535,7 @@ function Navbar({ activeLink, onNavClick, onOpenBooking, onOpenEmergency }: Navb
               <span
                 className={`absolute left-0 -bottom-0.5 h-px w-full transition-transform duration-500 ease-[var(--ease-premium)] ${barColor} ${
                   link === activeLink
-                    ? 'scale-x-100 origin-left'
+                    ? 'scale-x-100 origin-left !bg-brand'
                     : 'scale-x-0 origin-right group-hover:scale-x-100 group-hover:origin-left'
                 }`}
               />
@@ -535,12 +559,8 @@ function Navbar({ activeLink, onNavClick, onOpenBooking, onOpenEmergency }: Navb
             type="button"
             data-nav-item
             onClick={onOpenBooking}
-            style={
-              (solid ? { '--fill': '#404040', '--fill-text': '#fff' } : { '--fill': '#0a0a0a', '--fill-text': '#fff' }) as React.CSSProperties
-            }
-            className={`btn-fill hidden md:block px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-[0.15em] cursor-pointer ${
-              solid ? 'bg-black text-white' : 'bg-white text-black'
-            }`}
+            style={{ '--fill': '#0a0a0a', '--fill-text': '#fff' } as React.CSSProperties}
+            className="btn-fill hidden md:block px-5 py-2.5 rounded-full bg-brand text-black text-xs font-bold uppercase tracking-[0.15em] cursor-pointer"
           >
             Book Exam
           </button>
@@ -979,7 +999,7 @@ function HeroSlider({ sectionRef, onOpenBooking, onExplore }: HeroSliderProps) {
             data-hero-cta
             onClick={onOpenBooking}
             style={{ '--fill': '#0a0a0a', '--fill-text': '#fff' } as React.CSSProperties}
-            className="btn-fill flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full text-xs font-bold uppercase tracking-[0.2em] cursor-pointer"
+            className="btn-fill flex items-center gap-3 px-8 py-4 bg-brand text-black rounded-full text-xs font-bold uppercase tracking-[0.2em] cursor-pointer"
           >
             Book an Eye Exam
             <ArrowIcon className="btn-arrow" />
@@ -1014,8 +1034,8 @@ function HeroSlider({ sectionRef, onOpenBooking, onExplore }: HeroSliderProps) {
                 aria-current={i === active}
                 className="text-left cursor-pointer group py-2"
               >
-                <span data-hero-track className="block h-px w-full bg-white/25 overflow-hidden">
-                  <span data-hero-bar className="block h-full bg-white" />
+                <span data-hero-track className="block h-[2px] w-full bg-white/25 overflow-hidden">
+                  <span data-hero-bar className="block h-full bg-brand" />
                 </span>
                 <span
                   data-hero-tab-label
@@ -1088,21 +1108,40 @@ function ContextCursor() {
       if (next) setLabel(next);
       gsap.to(el, { autoAlpha: next ? 1 : 0, scale: next ? 1 : 0.4, duration: 0.35, ease: EASE.text, overwrite: 'auto' });
     };
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return show(null);
-      xTo(e.clientX);
-      yTo(e.clientY);
-      const target = e.target as Element | null;
+    let last: { x: number; y: number } | null = null;
+    const evaluate = (target: Element | null) => {
       const zone = target?.closest?.('[data-cursor]');
       const control = target?.closest?.('a, button, input, select, textarea, label');
       // Over a nested control (e.g. a button inside a gallery card) the standard pointer is clearer
       show(zone && (!control || control === zone) ? zone.getAttribute('data-cursor') : null);
     };
-    const onLeave = () => show(null);
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return show(null);
+      last = { x: e.clientX, y: e.clientY };
+      xTo(e.clientX);
+      yTo(e.clientY);
+      evaluate(e.target as Element | null);
+    };
+    // Content moves under a still mouse while scrolling, so re-check what is beneath it
+    let ticking = false;
+    const onScroll = () => {
+      if (!last || ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        if (last) evaluate(document.elementFromPoint(last.x, last.y));
+      });
+    };
+    const onLeave = () => {
+      last = null;
+      show(null);
+    };
     window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     document.documentElement.addEventListener('pointerleave', onLeave);
     return () => {
       window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('scroll', onScroll);
       document.documentElement.removeEventListener('pointerleave', onLeave);
     };
   }, []);
@@ -1111,7 +1150,7 @@ function ContextCursor() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="invisible pointer-events-none fixed left-0 top-0 z-[200] ml-4 mt-4 px-3 py-1.5 rounded-full bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em]"
+      className="invisible pointer-events-none fixed left-0 top-0 z-[200] ml-4 mt-4 px-3 py-1.5 rounded-full bg-brand text-black text-[10px] font-bold uppercase tracking-[0.2em]"
     >
       {label}
     </div>
@@ -1264,7 +1303,7 @@ function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <input
                     type="tel"
                     required
-                    placeholder="(201) 555-0199"
+                    placeholder="+263 77 123 4567"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-sm focus:border-black focus:outline-none bg-neutral-50 font-medium"
@@ -1308,8 +1347,8 @@ function BookingModal({ isOpen, onClose }: BookingModalProps) {
               Thank you, <strong>{formData.patientName || 'valued patient'}</strong>. A confirmation SMS & calendar invite has been dispatched for <strong>{formData.date}</strong> at <strong>{formData.time}</strong>.
             </p>
             <div className="p-4 bg-neutral-100 rounded-xl text-left text-xs space-y-1 mb-6 text-neutral-700">
-              <div><strong>Clinic:</strong> Spects World Flagship Studio</div>
-              <div><strong>Address:</strong> 6024 Bergenline Ave, West New York, NJ</div>
+              <div><strong>Clinic:</strong> {CLINIC.name}</div>
+              <div><strong>Address:</strong> {CLINIC.suite}, {CLINIC.street}, Bulawayo</div>
               <div><strong>Service:</strong> {formData.service}</div>
               <div><strong>Booking ID:</strong> {bookingId}</div>
             </div>
@@ -1374,16 +1413,16 @@ function EmergencyModal({ isOpen, onClose }: EmergencyModalProps) {
             Direct Emergency Hotline
           </div>
           <div className="text-2xl font-extrabold text-black tracking-tight">
-            +1 (201) 869-2020
+            {CLINIC.phone}
           </div>
           <div className="text-xs text-neutral-500">
-            Open daily: 6024 Bergenline Ave, West New York, NJ
+            {CLINIC.suite}, {CLINIC.street}, Bulawayo
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
           <a
-            href="tel:2018692020"
+            href={CLINIC.tel}
             className="w-full py-3.5 bg-black text-white rounded-full font-bold text-center text-sm hover:bg-neutral-800 transition-colors shadow-md"
           >
             Call Physician Now
@@ -1420,7 +1459,7 @@ function LegalModal({ type, onClose }: LegalModalProps) {
     terms: {
       title: 'Terms of Service',
       subtitle: 'Standard Eyecare & Custom Lens Crafting Terms',
-      text: `All custom spectacle lenses crafted by Spects World come with a complimentary 30-day progressive lens adaptation guarantee and a 1-year anti-scratch coating warranty. Frames purchased from our designer collection are eligible for free lifetime adjustments and ultrasonic cleanings at our West New York clinic studio.`,
+      text: `All custom spectacle lenses crafted by Spects World come with a complimentary 30-day progressive lens adaptation guarantee and a 1-year anti-scratch coating warranty. Frames purchased from our designer collection are eligible for free lifetime adjustments and ultrasonic cleanings at our Bulawayo practice.`,
     },
     hipaa: {
       title: 'HIPAA Compliance Notice',
@@ -1465,7 +1504,7 @@ function LegalModal({ type, onClose }: LegalModalProps) {
         <div className="prose text-xs md:text-sm text-neutral-700 leading-relaxed space-y-3 mb-6 bg-neutral-50 p-4 rounded-xl border border-neutral-200">
           <p>{item.text}</p>
           <p>
-            For questions regarding clinical records or requests for physical transcripts, please contact our Compliance Officer at <strong>compliance@spectsworld.com</strong> or call (201) 869-2020.
+            For questions regarding clinical records or requests for physical transcripts, please visit us at {CLINIC.suite}, {CLINIC.street}, Bulawayo, or call <strong>{CLINIC.phone}</strong>.
           </p>
         </div>
 
@@ -1502,6 +1541,7 @@ function EyeCareSection({ sectionRef, onOpenBooking, onOpenTerms }: EyeCareSecti
     const q = gsap.utils.selector(root);
     const start = 'top 72%';
     revealImage(q('[data-photo]')[0], q('[data-photo-img]')[0], { trigger: root, start });
+    revealUp(q('[data-visit]'), { trigger: root, start, delay: 0.5, y: 30 });
     revealUp(q('[data-eyebrow]'), { trigger: root, start, y: 12, delay: 0.15 });
     revealLines(q('h2')[0], { trigger: root, start, delay: 0.2, stagger: 0.1 });
     revealUp(q('[data-intro]'), { trigger: root, start, delay: 0.45 });
@@ -1530,22 +1570,59 @@ function EyeCareSection({ sectionRef, onOpenBooking, onOpenTerms }: EyeCareSecti
       className="scroll-mt-16 md:scroll-mt-[72px] px-5 md:px-8 xl:px-10 pt-20 md:pt-32 pb-4 md:pb-6"
     >
       <div className="mx-auto max-w-7xl grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-        <div data-photo className="relative aspect-[4/5] xl:aspect-[6/7] rounded-2xl overflow-hidden bg-neutral-100">
+        <div className="flex flex-col gap-4">
+        <div data-photo className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-100">
           <img
             data-photo-img
             src={SECTION3_BG}
-            alt="Patient with clear vision wearing fashionable spectacles"
+            alt="The Spects World team at the reception desk in David Mansions, Bulawayo"
             decoding="async"
             loading="lazy"
-            className="absolute inset-x-0 -top-[6%] h-[112%] w-full object-cover"
+            className="absolute inset-x-0 -top-[6%] h-[112%] w-full object-cover object-[50%_40%]"
           />
           <span className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-white text-[11px] font-semibold text-black">
-            Zeiss wavefront diagnostics
+            Our team at David Mansions, Bulawayo
           </span>
         </div>
 
+          {/* Visit card: real practice details */}
+          <div data-visit className="rounded-2xl bg-stone-50 p-6 md:p-8 grid sm:grid-cols-2 gap-6">
+            <div>
+              <span className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500">Visit us</span>
+              <address className="not-italic mt-3 text-sm leading-relaxed text-neutral-700">
+                {CLINIC.suite}
+                <br />
+                {CLINIC.street}
+                <br />
+                {CLINIC.area}
+              </address>
+              <a
+                href={CLINIC.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-black underline underline-offset-4 decoration-brand hover:decoration-black transition-colors"
+              >
+                Get directions
+                <ArrowIcon className="btn-arrow" size={12} />
+              </a>
+            </div>
+            <div>
+              <span className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500">Call us</span>
+              <a
+                href={CLINIC.tel}
+                className="mt-3 block text-xl md:text-2xl font-bold tracking-tight text-black hover:text-neutral-600 transition-colors"
+              >
+                {CLINIC.phone}
+              </a>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+                Eye tests, contact lenses, spectacle dispensing and repairs.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div>
-          <span data-eyebrow className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500">
+          <span data-eyebrow className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500 before:content-[''] before:inline-block before:w-6 before:h-[2px] before:bg-brand before:mr-3 before:align-middle">
             Eye Care
           </span>
           <h2 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight leading-[1.05] text-black">
@@ -1561,7 +1638,7 @@ function EyeCareSection({ sectionRef, onOpenBooking, onOpenTerms }: EyeCareSecti
             {CARE_STEPS.map((step, i) => (
               <li key={step.title} className="group relative py-5">
                 <div data-step-content className="grid grid-cols-[3rem_1fr] gap-2">
-                  <span className="text-xs font-semibold text-neutral-400 tabular-nums pt-1 transition-colors duration-500 group-hover:text-black">
+                  <span className="text-xs font-semibold text-neutral-400 tabular-nums pt-1 transition-colors duration-500 group-hover:text-brand">
                     0{i + 1}
                   </span>
                   <div className="transition-transform duration-500 ease-[var(--ease-premium)] group-hover:translate-x-1.5">
@@ -1571,7 +1648,7 @@ function EyeCareSection({ sectionRef, onOpenBooking, onOpenTerms }: EyeCareSecti
                 </div>
                 {/* Divider: drawn on scroll, darkens left → right on hover */}
                 <span data-step-divider aria-hidden="true" className="absolute bottom-0 inset-x-0 h-px bg-neutral-200 overflow-hidden">
-                  <span className="absolute inset-0 bg-neutral-900 origin-left scale-x-0 transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-x-100" />
+                  <span className="absolute inset-0 bg-brand origin-left scale-x-0 transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-x-100" />
                 </span>
               </li>
             ))}
@@ -1582,8 +1659,8 @@ function EyeCareSection({ sectionRef, onOpenBooking, onOpenTerms }: EyeCareSecti
               type="button"
               data-cta
               onClick={onOpenBooking}
-              style={{ '--fill': '#404040', '--fill-text': '#fff' } as React.CSSProperties}
-              className="btn-fill flex items-center gap-3 px-7 py-4 rounded-full bg-black text-white text-xs font-bold uppercase tracking-[0.18em] cursor-pointer"
+              style={{ '--fill': '#0a0a0a', '--fill-text': '#fff' } as React.CSSProperties}
+              className="btn-fill flex items-center gap-3 px-7 py-4 rounded-full bg-brand text-black text-xs font-bold uppercase tracking-[0.18em] cursor-pointer"
             >
               Book Online
               <ArrowIcon className="btn-arrow" />
@@ -1774,7 +1851,7 @@ function VisionGallerySection({ sectionRef, onCall }: VisionGallerySectionProps)
                   }`}
                 >
                   <div className="transition-transform duration-500 ease-[var(--ease-premium)] md:group-hover/tile:-translate-y-1">
-                    <h3 className="text-lg md:text-3xl font-bold leading-[1.05] whitespace-pre-line">{svc.name}</h3>
+                    <h3 className="text-lg md:text-2xl xl:text-3xl font-bold leading-[1.05] whitespace-pre-line">{svc.name}</h3>
                     {/* Description unfolds for the hovered / active tile (desktop) */}
                     <div
                       className={`hidden md:grid transition-[grid-template-rows,opacity] duration-500 ease-[var(--ease-premium)] ${
@@ -1797,7 +1874,7 @@ function VisionGallerySection({ sectionRef, onCall }: VisionGallerySectionProps)
                   <span
                     className={`self-end w-8 h-8 md:w-11 md:h-11 rounded-full border flex items-center justify-center text-[11px] md:text-xs font-semibold tabular-nums transition-[background-color,color,border-color,transform] duration-500 ease-[var(--ease-premium)] group-hover/tile:scale-110 ${
                       isActive
-                        ? 'border-black bg-black text-white'
+                        ? 'border-brand bg-brand text-black'
                         : 'border-white/70 group-hover/tile:bg-white group-hover/tile:text-black group-hover/tile:border-white'
                     }`}
                   >
@@ -1943,7 +2020,7 @@ function TestimonialsSection({ sectionRef }: TestimonialsSectionProps) {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
-            <span data-eyebrow className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500">
+            <span data-eyebrow className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500 before:content-[''] before:inline-block before:w-6 before:h-[2px] before:bg-brand before:mr-3 before:align-middle">
               Patient Stories
             </span>
             <h2 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight leading-[1.05] text-black">
@@ -2036,7 +2113,7 @@ function TestimonialsSection({ sectionRef }: TestimonialsSectionProps) {
                   >
                     <span
                       className={`block h-1.5 rounded-full transition-[width,background-color] duration-500 ease-[var(--ease-premium)] ${
-                        idx === active ? 'w-8 bg-black' : 'w-3 bg-neutral-300 group-hover/pill:bg-neutral-500'
+                        idx === active ? 'w-8 bg-brand' : 'w-3 bg-neutral-300 group-hover/pill:bg-neutral-500'
                       }`}
                     />
                   </button>
@@ -2182,7 +2259,7 @@ export default function App() {
   };
 
   return (
-    <div className="bg-white text-black font-sans selection:bg-black selection:text-white">
+    <div className="bg-white text-black font-sans selection:bg-brand selection:text-black">
       {/* Fixed Navbar */}
       <Navbar
         activeLink={activeLink}
@@ -2225,7 +2302,7 @@ export default function App() {
             className="py-16 md:py-24 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/10"
           >
             <div className="max-w-3xl">
-              <span data-footer-up className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500">
+              <span data-footer-up className="block text-[11px] font-bold uppercase tracking-[0.3em] text-neutral-500 before:content-[''] before:inline-block before:w-6 before:h-[2px] before:bg-brand before:mr-3 before:align-middle">
                 Book a visit
               </span>
               <h2 data-footer-title className="mt-4 text-4xl md:text-6xl font-bold tracking-tight leading-[1.02] text-white">
@@ -2241,19 +2318,19 @@ export default function App() {
                 type="button"
                 data-footer-btn
                 onClick={() => setIsBookingOpen(true)}
-                style={{ '--fill': '#262626', '--fill-text': '#fff' } as React.CSSProperties}
-                className="btn-fill flex items-center justify-center gap-3 px-7 py-4 rounded-full bg-white border border-white text-black text-xs font-bold uppercase tracking-[0.18em] cursor-pointer"
+                style={{ '--fill': '#fff', '--fill-text': '#0a0a0a' } as React.CSSProperties}
+                className="btn-fill flex items-center justify-center gap-3 px-7 py-4 rounded-full bg-brand border border-brand text-black text-xs font-bold uppercase tracking-[0.18em] cursor-pointer"
               >
                 <CalendarIcon className="btn-arrow" />
                 Book an Eye Exam
               </button>
               <a
-                href="tel:2018692020"
+                href={CLINIC.tel}
                 data-footer-btn
                 style={{ '--fill': '#fff', '--fill-text': '#0a0a0a' } as React.CSSProperties}
                 className="btn-fill px-7 py-4 rounded-full border border-white/25 text-white text-xs font-bold uppercase tracking-[0.18em] text-center"
               >
-                (201) 869-2020
+                {CLINIC.phone}
               </a>
             </div>
           </div>
@@ -2264,14 +2341,10 @@ export default function App() {
             className="py-14 md:py-16 grid grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-12 text-sm"
           >
             <div className="col-span-2 md:col-span-4">
-              <div className="flex flex-col text-white">
-                <span className="text-xl font-extrabold uppercase tracking-[0.35em] leading-none">Spects</span>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.5em] leading-none mt-1.5 text-neutral-400">
-                  World
-                </span>
-              </div>
+              <img src={logoLight} alt="Spects World" width={381} height={249} loading="lazy" className="h-16 w-auto" />
               <p className="mt-5 max-w-xs leading-relaxed">
-                An independent optometry clinic and eyewear studio in West New York, NJ.
+                Eye tests, eye health education, spectacle dispensing, contact lenses and repairs, in the heart of
+                Bulawayo.
               </p>
 
               <form onSubmit={handleNewsletterSubmit} className="mt-8 max-w-xs">
@@ -2325,20 +2398,19 @@ export default function App() {
               <h3 className="text-xs font-semibold text-white mb-5">Visit</h3>
               <address className="not-italic space-y-3 leading-relaxed">
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=6024+Bergenline+Ave+West+New+York+NJ+07093"
+                  href={CLINIC.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block hover:text-white transition-colors"
                 >
-                  6024 Bergenline Ave
+                  {CLINIC.suite}
                   <br />
-                  West New York, NJ 07093
+                  {CLINIC.street}
+                  <br />
+                  {CLINIC.area}
                 </a>
-                <a href="tel:2018692020" className="block hover:text-white transition-colors">
-                  +1 (201) 869-2020
-                </a>
-                <a href="mailto:care@spectsworld.com" className="block hover:text-white transition-colors">
-                  care@spectsworld.com
+                <a href={CLINIC.tel} className="block hover:text-white transition-colors">
+                  {CLINIC.phone}
                 </a>
                 <button
                   type="button"
@@ -2368,7 +2440,7 @@ export default function App() {
           {/* Legal bar */}
           <div className="py-6 border-t border-white/10 flex flex-col-reverse md:flex-row md:items-center justify-between gap-5 text-xs text-neutral-500">
             <p>
-              &copy; {new Date().getFullYear()} Spects World Inc. &middot; Board Certified Optometric Clinic #OP-8821
+              &copy; {new Date().getFullYear()} {CLINIC.name} &middot; Registered with the Health Professions Authority of Zimbabwe
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
               {LEGAL_LINKS.map(([type, label]) => (
